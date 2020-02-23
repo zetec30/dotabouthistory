@@ -32,7 +32,7 @@ const options = {
 
 function preload() {
  
-  PopStart = loadSound('Sound/startPop.wav');
+ 
   Pop = loadSound('Sound/popUp.wav');
   SeaGuls = loadSound('Sound/Seashore And Seagulls-SoundBible.com-1708097714.wav');
   
@@ -42,11 +42,11 @@ function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   beginLocation();
   
-  myMap = mappa.tileMap(options)//map variable with options from above
+  myMap = mappa.tileMap(options);//map variable with options from above
 
   myMap.overlay(canvas, onMapLoaded);//canvas variable with onMapLoaded function
  
-
+  
 
 function beginLocation() {
   if (navigator.geolocation) {
@@ -73,7 +73,6 @@ function gotPosition(position) {
     userMarker.setLatLng([position.coords.latitude, position.coords.longitude]);
   }
 }
-
 
 
 
@@ -115,7 +114,7 @@ function onMapLoaded() {
     iconAnchor: [15, 65]
   });
   //target markers
-
+  BtnFalse();
   drawtmark();
   SeaGuls.play();
   //opens modal by default
@@ -153,11 +152,56 @@ function onMapLoaded() {
   });
 
 
+
+//function callled when wrong anwser chosen
+function BtnFalse(){
+//button 1 incorrect answer button removes Marker2 and re adds Marker1 pans back to array [0]
+  $("#false1").click(function(){
+    $("#Btn1").modal("hide");
+    Marker2.remove();
+    myMap.map.panTo(tarArray[0]);
+    Marker1.addTo(myMap.map);
+    Wrong.play();
+  });
+//button 2 incorrect answer button removes Marker3 and re adds Marker1 pans back to array [0]
+  $("#true2").click(function(){
+    $("#Btn2").modal("hide");
+    Marker3.remove();
+    myMap.map.panTo(tarArray[0]);
+    Marker1.addTo(myMap.map);
+
+  });
+
+//button 3 incorrect answer button removes Marker2,3,4 and re adds Marker1 pans back to array [0]
+  $("#false3").click(function(){
+    $("#Btn3").modal("hide");
+    Marker4.remove();
+    Marker3.remove();
+    Marker2.remove();
+    myMap.map.panTo(tarArray[0]);
+    Marker1.addTo(myMap.map);
+
+  });
+
+//button 4 incorrect answer button removes Marker2,3,4,5 and re adds Marker1 pans back to array [0]
+  $("#false4").click(function(){
+    $("#Btn4").modal("hide");
+    Marker5.remove();
+    Marker4.remove();
+    Marker3.remove();
+    Marker2.remove();
+    myMap.map.panTo(tarArray[0]);
+    Marker1.addTo(myMap.map);
+
+  });
+
+}
   function drawtmark() {
     //Start Marker1
     Marker1 = L.marker(tarArray[0], { icon: mem } ).addTo(myMap.map);
     //click fuction modal ID 1  to show dialogue  if question is equal to true1 (button ID for true)
     //remove Marker 1 and add Marker 2.
+    
     Marker1.on("click", function(e) {
       $("#Btn1").modal("show");
 
@@ -167,7 +211,7 @@ function onMapLoaded() {
       }
       
       //Add marker2 
-      Marker2 = L.marker(tarArray[1], { icon: Smeaton }).addTo(myMap.map)
+      Marker2 = L.marker(tarArray[1], { icon: Smeaton }).addTo(myMap.map);
       Pop.play();
      
       Marker2.on("click", function(e) {
@@ -206,6 +250,15 @@ function onMapLoaded() {
       });
     });
   }
+  function draw(){
+    var pos = [];
+
+    pos = myMap.pixelToLatLng(mouseX, mouseY);
+    pos = [pos.lng, pos.lat];
+    console.log(mouseX, mouseY);
+  }
 }
 
 }
+
+
